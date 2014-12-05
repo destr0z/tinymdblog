@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <form role="form" method="post">
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+              </div>
+              <div class="form-group">
+                <label for="content">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="20" style="-moz-tab-size:4; tab-size:4;"></textarea>
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <hr>
+            <p>Legend</p>
+            <pre>
+## h2 Heading
+### h3 Heading
+#### h4 Heading
+[Assemble](http://assemble.io)
+**rendered as bold text**
+_rendered as italicized text_
+> blockquote
+* valid bullet
+1. ordered list
+2. second item
+                </pre>
+            </div>
+            <div class="col-md-6">
+                <div class="preview"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $("textarea").keydown(function(e) {
+            if(e.keyCode === 9) { // tab was pressed
+                // get caret position/selection
+                var start = this.selectionStart;
+                    end = this.selectionEnd;
+
+                var $this = $(this);
+
+                // set textarea value to: text before caret + tab + text after caret
+                $this.val($this.val().substring(0, start)
+                            + "\t"
+                            + $this.val().substring(end));
+
+                // put caret at right position again
+                this.selectionStart = this.selectionEnd = start + 1;
+
+                // prevent the focus lose
+                return false;
+            }
+        });
+        $("#content").keyup(function(ev) {
+            var content = $("form").serialize();
+            $.post("/preview/", content, function(data) {
+                $(".preview").html(data);
+            });
+        });
+    </script>    
+{% endblock %}
