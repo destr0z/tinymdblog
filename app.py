@@ -60,9 +60,9 @@ def page(slug):
     html_text = ''
     try:
         html_text = ''
-        pagefolder = os.environ.get('MD_FOLDER')
+        md_folder = os.environ.get('MD_FOLDER')
         print pagefolder
-        filename = 'pages/'+slug+'.md'
+        filename = md_folder+'/'+slug+'.md'
         print filename
         with open(filename, 'r') as text_file:
             html_text = markdown(text_file.read(), extensions=['markdown.extensions.nl2br'])        
