@@ -61,7 +61,6 @@ def page(slug):
     try:
         html_text = ''
         md_folder = os.environ.get('MD_FOLDER')
-        print pagefolder
         filename = md_folder+'/'+slug+'.md'
         print filename
         with open(filename, 'r') as text_file:
