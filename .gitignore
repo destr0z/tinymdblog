@@ -2,6 +2,9 @@
 /Include
 /Lib
 /Scripts
+/pages
+/public_html
 
 # .pyc
 *.pyc
+.env

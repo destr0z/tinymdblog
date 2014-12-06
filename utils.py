@@ -1,27 +1,16 @@
 #!/usr/bin/env python
 #coding: utf-8
- 
-from unicodedata import normalize
+
 from functools import wraps
 from flask import request, Response
- 
- 
-def slugify(text, encoding=None,
-         permitted_chars='abcdefghijklmnopqrstuvwxyz0123456789-'):
-    if isinstance(text, str):
-        text = text.decode(encoding or 'ascii')
-    clean_text = text.strip().replace(' ', '-').lower()
-    while '--' in clean_text:
-        clean_text = clean_text.replace('--', '-')
-    ascii_text = normalize('NFKD', clean_text).encode('ascii', 'ignore')
-    strict_text = map(lambda x: x if x in permitted_chars else '', ascii_text)
-    return ''.join(strict_text)
+import os
+
 
 def check_auth(username, password):
     """This function is called to check if a username /
     password combination is valid.
     """
-    return username == 'admin' and password == 'secret'
+    return username == os.environ.get('ADMIN_ID') and password == os.environ.get('ADMIN_PW')
 
 def authenticate():
     """Sends a 401 response that enables basic auth"""
