@@ -1,15 +1,10 @@
-#!/usr/bin/env python
-#coding: utf-8
-
 from flask import Flask, render_template, request, make_response
 from markdown import markdown
 from utils import requires_auth
 from slugify import slugify
+from tinymdblog import app
 import os
-import dotenv
-dotenv.load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
-app = Flask(__name__)
 
 @app.route('/')
 def start():
@@ -52,7 +47,7 @@ def preview():
     if request.method == 'POST' and request.form.get('content'):
         text = request.form.get('content')
         html_text = markdown(text, extensions=['markdown.extensions.nl2br'])
-    
+
     return html_text
 
 @app.route('/<slug>', methods=['GET'])
@@ -64,7 +59,7 @@ def page(slug):
         filename = md_folder+'/'+slug+'.md'
         print filename
         with open(filename, 'r') as text_file:
-            html_text = markdown(text_file.read(), extensions=['markdown.extensions.nl2br'])        
+            html_text = markdown(text_file.read(), extensions=['markdown.extensions.nl2br'])
     except:
         pass
 
@@ -73,6 +68,3 @@ def page(slug):
     else:
         resp = make_response(render_template('index.html', content=html_text), 200)
     return resp
-
-if __name__ == '__main__':
-    app.run(debug=True)
