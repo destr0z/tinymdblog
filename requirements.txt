@@ -1,2 +1,4 @@
 Flask>=0.10.1
 Markdown>=2.5.2
+python-dotenv==0.1.0
+python-slugify==0.1.0
