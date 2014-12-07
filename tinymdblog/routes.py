@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, make_response
 from markdown import markdown
-from utils import requires_auth
+from auth import requires_auth
 from slugify import slugify
 from tinymdblog import app
+from utils import get_slugs
 import os
 
 
 @app.route('/')
-def start():
+def index():
     html_text = ''
-    return render_template('index.html', content=html_text)
+    slugs = get_slugs()
+    return render_template('index.html', content=html_text, slugs=slugs)
 
 @app.route('/admin/', methods=['POST', 'GET'])
 @requires_auth
